@@ -8,6 +8,16 @@
 二、	使用准备
 这一块将说明用到哪些python库文件以及如何安装，除numpy, pandas, sklearn, statsmodels, random, xlrd外，请在此处进行补充
 
+该部分内容将说明代码的运行环境和需要引用的库信息以及安装指南，如果已经配置，请跳过此步骤。
+本实验将使用python3.0以上的环境，如果你使用的是windows系统，请打开命令台输入pip --verison 查看python版本，是否有pip功能。
+如果没有，请输入curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py 进行下载
+之后，请继续在命令行下载以下库
+sklearn：pip install scikit-learn
+其余库numpy, pandas, statsmodels, random, xlrd请按 pip install 库名(如：numpy)的格式进行安装
+如果版本过旧，可以使用pip install -U 库名(如：pip) 的格式进行更新。
+
+
+
 三、	代码执行说明
 此处将说明如何运行我们整合的文件，目前拟定的文件排序为preprocessing.py, multiregression.py, decisiontree.py, autoencoder.py, main.py（请将完成的代码发送到群中，进行最后的统一）
 请将你负责的部分进行说明。
