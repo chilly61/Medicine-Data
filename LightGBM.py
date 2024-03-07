@@ -75,10 +75,7 @@ class LightGBM_Detection:
         else:
             raise RuntimeError("Unknown Medicine Type")
 
-    import time
-    time0 = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
-
-    def statistical_analysis(self, save=False, save_path='./RFD/lightgbm'+time0+'.xlsx'):
+    def statistical_analysis(self, save=False, save_path='./RFD/lightgbm.xlsx'):
         columns = ["Order Number", "Sold Price", "Predicted Sold Price",
                    "Online Price", "Sold/Online Proportion", "Predict/Online Proportion"]
         online_price_X = self.online_price_X.values.astype(float)

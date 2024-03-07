@@ -13,6 +13,8 @@ def ols_model(Y, X):
 
 def regression(df_mr, type, time0):
 
+    # df_mr = df_mr.drop_duplicates(subset='订单代码', keep='first')
+
     type_med = str(type)
     print(type_med)
     Z = df_mr["挂网价格"]
