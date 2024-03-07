@@ -1,3 +1,5 @@
+import numpy as np
+import pandas as pd
 import autoencoder as ae
 import preprocessing
 import multiregression as MR
@@ -36,11 +38,26 @@ scoreZ = RFD.score('Z')
 print(scoreX, scoreZ)
 RFD_result = RFD.statistical_analysis(save=True)
 
+rf = pd.read_excel(io='./RFD/RFD.xlsx')
+pathway = './RFD/RFD'+time0+'.xls'
+wr = pd.ExcelWriter(pathway)
+rf.to_excel(wr, sheet_name='Xiyao', index=False)
+wr.save()
+wr.close()  # 释放空间 Unleash the memory
+
 print('RFD is okay!')
 
 LGBM = LightGBM_Detection()
 LGBM.fit(df_X, df_Z)
 LGBM_result = LGBM.statistical_analysis(save=True)
+
+rf = pd.read_excel(io='./RFD/lightgbm.xlsx')
+pathway = './RFD/LGBM'+time0+'.xls'
+wr = pd.ExcelWriter(pathway)
+rf.to_excel(wr, sheet_name='Xiyao', index=False)
+wr.save()
+wr.close()  # 释放空间 Unleash the memory
+
 
 print('LGBM is okay!')
 
@@ -50,7 +67,7 @@ print("决策树运行时间：", runtime, "秒")
 
 # 线性回归部分
 Xi_x, Xi_y,  Xi_dingdan, Xi_model = MR.regression(df_X, 'X', time0)
-Zhong_x, Zhong_y, Zhong_dingdan, Zhong_model = MR.regression(df_Z, 'Z', time0)
+# Zhong_x, Zhong_y, Zhong_dingdan, Zhong_model = MR.regression(df_Z, 'Z', time0)
 
 print("MR is okay!")
 
@@ -59,8 +76,7 @@ runtime = end3-end2
 print("回归运行时间：", runtime, "秒")
 
 # autoencoder部分
-# ae.encoder(onlineprice, df_X, df_Z, time0)
-# ae.function1(df_Z)
+ae.encoder(onlineprice, df_X, df_Z, time0)
 print('ae is okay!')
 
 end4 = time.perf_counter()
@@ -69,12 +85,12 @@ print("autoencoder运行时间:", runtime, "秒")
 
 
 con_x = Output.Outlier_Index_MR(Xi_x, Xi_y, Xi_dingdan, Xi_model, time0)
-con_y = Output.Outlier_Index_MR(
-    Zhong_x, Zhong_y, Zhong_dingdan, Zhong_model, time0)
+# con_y = Output.Outlier_Index_MR(
+#     Zhong_x, Zhong_y, Zhong_dingdan, Zhong_model, time0)
 
-con_z = Output.Outlier_RFD('Xiyao', time0)
+con_21, con_22 = Output.Outlier_RFD('Xiyao', time0)
 
-Output.Integration(Xi_dingdan, con_x, con_z, time0)
+Output.Integration(Xi_dingdan, con_x, con_21, con_22, time0)
 
 
 end5 = time.perf_counter()
