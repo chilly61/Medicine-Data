@@ -48,10 +48,11 @@ def encoder(olprice, df_X, df_Z, time0):
         # 数据集分割
         X_train, X_test = train_test_split(input_data, test_size=0.2)
         input_data = X_train
-    input_size = 88
+
+    input_size = 79
     hidden_size = 22
     code_size = 22
-    output_size = 88
+    output_size = 79
 
     x = Input(shape=(input_size,))
 
@@ -126,9 +127,9 @@ def encoder(olprice, df_X, df_Z, time0):
     })
 
     # 保存到Excel文件
-    result_df.to_excel('/AE/'+time0+'result_data.xlsx', index=False, engine='openpyxl', columns=["Predict_Price",
-                                                                                                 "Original_Price", "Accuracy",
-                                                                                                 "restructure_error"])
+    result_df.to_excel('./AE/'+time0+'result_data.xlsx', index=False, engine='openpyxl', columns=["Predict_Price",
+                                                                                                  "Original_Price", "Accuracy",
+                                                                                                  "restructure_error"])
 
     # 获取outlier1异常值的索引，去掉原始数据集中不必要的列，并写入Excel
     outlier1_indices = np.where(outliers1)[0]
@@ -143,64 +144,3 @@ def encoder(olprice, df_X, df_Z, time0):
     outlier2_data = outlier2_data.drop("Log_采购价格", axis=1)
     outlier2_data.to_excel('outliers2_data.xlsx',
                            index=False, engine='openpyxl')
-
-
-# input_size = 88
-# hidden_size = 22
-# code_size = 22
-# output_size = 88
-#
-# x = Input(shape=(input_size,))
-#
-# # Encoder
-# hidden_1 = Dense(hidden_size, activation='softplus')(x)
-# h = Dense(code_size, activation='softplus')(hidden_1)
-#
-# # Decoder
-# hidden_2 = Dense(hidden_size, activation='softplus')(h)
-# r = Dense(output_size, activation='softplus')(hidden_2)
-#
-# autoencoder = Model(inputs=x, outputs=r)
-# autoencoder.compile(optimizer='adam', loss='mse')
-#
-# # 假设input_data是你的输入数据
-# autoencoder.fit(input_data.values.astype(float), input_data.values.astype(float), batch_size=128, epochs=100, verbose=2)
-#
-# # 使用模型对输入数据进行预测
-# reconstructed_data = autoencoder.predict(input_data.values.astype(float))
-#
-# # 将重构的数据转换为DataFrame
-# df = pd.DataFrame(reconstructed_data)  # 根据你的数据适当调整列名
-#
-# # 获取采购价格列的位置
-# Predicted_Log_Price = reconstructed_data[:, predict_price_index]
-# Predict_Price = np.expm1(Predicted_Log_Price)
-# # 计算Accuracy
-# Accuracy = [p / o if o != 0 else 0 for p, o in zip(Original_Price, Predict_Price)]
-# # print(len(Predict_Price))
-# # print(len(Original_Price))
-# # print(len(Accuracy))
-#
-# risk_scores = []
-# for accuracy in Accuracy:
-#     if accuracy > 1.15:
-#         risk_scores.append('high score')
-#     elif 1.10 <= accuracy <= 1.15:
-#         risk_scores.append('medium score')
-#     elif 1.05 <= accuracy < 1.10:
-#         risk_scores.append('low score')
-#     else:
-#         risk_scores.append('normal')
-#
-# # 合并到新的DataFrame
-# result_df = pd.DataFrame({
-#     "Predict_Price": Predict_Price,
-#     "Original_Price": Original_Price,
-#     "Accuracy": Accuracy,
-#     "risk_score": risk_scores
-# })
-#
-# # 保存到Excel文件
-# result_df.to_excel('result_data.xlsx', index=False, engine='openpyxl', columns=["Predict_Price",
-#                                                                                 "Original_Price", "Accuracy",
-#                                                                                 "risk_score"])
